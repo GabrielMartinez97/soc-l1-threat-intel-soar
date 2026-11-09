@@ -60,14 +60,22 @@ def defang_ioc(ioc: str) -> str:
     return re.sub(r"\.([a-zA-Z]{2,})(/|$)", r"[.]\1\2", defanged)
 
 
+RFC1918_NETWORKS = (
+    ipaddress.ip_network("10.0.0.0/8"),
+    ipaddress.ip_network("172.16.0.0/12"),
+    ipaddress.ip_network("192.168.0.0/16"),
+    ipaddress.ip_network("127.0.0.0/8"),
+)
+
+
 def is_private_or_reserved_ip(ip_str: str) -> bool:
     """
-    Verifica si una dirección IPv4 es privada (RFC 1918: 10.x, 172.16-31.x, 192.168.x),
-    loopback (127.x) o inválida.
+    Verifica si una dirección IPv4 pertenece a los rangos de red interna privada
+    RFC 1918 (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16) o loopback (127.0.0.0/8).
     """
     try:
         ip_obj = ipaddress.ip_address(ip_str)
-        return ip_obj.is_private or ip_obj.is_loopback or ip_obj.is_reserved
+        return any(ip_obj in net for net in RFC1918_NETWORKS)
     except ValueError:
         return True
 
