@@ -1,0 +1,22 @@
+=== TICKET DE ALERTA SIEM #INC-2026-0892 ===
+Fecha: 2026-11-08 09:30:00 UTC
+Origen: Mini-SIEM & EDR Alert Forwarder
+
+Resumen del Evento:
+El servidor bastión interno (10.10.20.15) y la estación de trabajo de administración (192.168.1.50)
+registraron múltiples anomalías de red y ejecución de archivos sospechosos.
+
+1. Conexiones entrantes sospechosas detectadas en logs:
+   - Nodo de fuerza bruta SSH (Defanged): 185.220.101[.]45
+   - Origen de Password Spraying: 45.155.205.109
+   - Atacante Web SQLi / LFI: 198.51.100[.]77
+   - Escáner de vulnerabilidades: 91.240.118.222
+   - Consulta DNS saliente legítima hacia servidor Google: 8.8.8.8
+
+2. Dominios y URLs de Comando y Control (C2) observados en payload XSS/RCE:
+   - URL capturada: hxxp://c2.attacker-domain[.]xyz/collect
+   - Dominio secundario de exfiltración: drop.darknet-loader.ru
+
+3. Archivos binarios recolectados en la carpeta /tmp del servidor bastión (Hashes SHA-256):
+   - Muestra #1 (/tmp/kworker_crypt.elf): 24d004a104d4d54034dbcffc2a4b19a11f39008a575aa614ea04703480b1022c
+   - Muestra #2 (C:\Windows\System32\notepad.exe): e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
