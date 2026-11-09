@@ -44,12 +44,52 @@ soc-l1-threat-intel-soar/
 │   ├── extractor.py            # Extracción regex, Refanging, Defanging y filtro RFC 1918
 │   ├── enricher.py             # Clientes API (VirusTotal/AbuseIPDB) + Feed CTI de respaldo
 │   └── soar_reporter.py        # Generador de veredicto y plantilla de triaje SOC L1
-├── reports/                    # Reportes de Threat Intelligence generados
-├── tests/                      # Pruebas unitarias
-├── .env.example                # Plantilla segura para API Keys
-├── main.py                     # CLI principal del Mini-SOAR
+├── reports/
+│   ├── SOAR_Threat_Intel_Report.md # Reporte CTI generado automáticamente
+│   └── soar_enrichment.json        # Exportación estructurada para integración SOAR
+├── tests/
+│   └── test_soar.py                # Pruebas unitarias de RFC1918, refanging y veredictos
+├── .env.example                    # Plantilla segura para API Keys
+├── main.py                         # CLI principal del Mini-SOAR
 └── README.md
 ```
+
+---
+
+## 🚀 Ejecución Rápida (CLI y Pruebas)
+
+1. **Ejecutar el enriquecimiento automático sobre el ticket de entrada:**
+   ```bash
+   python main.py
+   ```
+   **Salida en consola:**
+   ```text
+   ========================================================================================
+     SOC L1 THREAT INTELLIGENCE & IOC TRIAGE AUTOMATOR (MINI-SOAR)
+   ========================================================================================
+   [+] Activos Internos RFC 1918 descartados de OSINT: ['10.10.20.15', '192.168.1.50']
+   [+] IOCs Externos extraídos: 5 IPs | 2 Dominios/URLs | 2 Hashes SHA-256
+   ----------------------------------------------------------------------------------------
+   VERDICT     | SCORE   | TYPE       | IOC (DEFANGED)                      | INTEL / FAMILY
+   ---------------------------------------------------------------------------------------------------------
+   MALICIOUS   | 100/100 | SHA-256    | 24d004a104d4d54034dbcffc2a4b19a1... | Familia: Ransomware.WannaCry / Cryptor
+   MALICIOUS   | 96/100  | IPv4       | 198.51.100[.]77                     | Offshore VPS Hosting
+   MALICIOUS   | 95/100  | IPv4       | 185.220.101[.]45                    | Zwiebelfreunde e.V. (Tor Network)
+   MALICIOUS   | 92/100  | URL/Domain | hxxp://c2.attacker-domain[.]xyz/... | C2 Credential Harvester
+   MALICIOUS   | 88/100  | URL/Domain | drop.darknet-loader[.]ru            | Malware Dropper Infrastructure
+   MALICIOUS   | 85/100  | IPv4       | 45.155.205[.]109                    | Selectel Bulletproof Hosting
+   SUSPICIOUS  | 58/100  | IPv4       | 91.240.118[.]222                    | Scanner Cloud ASN
+   BENIGN      | 0/100   | IPv4       | 8.8.8[.]8                           | Google LLC (Google Public DNS)
+   BENIGN      | 0/100   | SHA-256    | e3b0c44298fc1c149afbf4c8996fb924... | Microsoft Windows Genuine File (Empty/Clean Hash)
+   ```
+
+2. **Ejecutar las pruebas unitarias:**
+   ```bash
+   python -m unittest discover -s tests -v
+   ```
+
+3. **Ver el reporte de triaje CTI generado:**
+   * 📄 [Ver Reporte SOAR de Threat Intelligence](reports/SOAR_Threat_Intel_Report.md)
 
 ---
 
